@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+	<xs:element name="stb" type="projectType"/>
+
+	<xs:complexType name="projectType">
+		<xs:sequence>
+			<xs:element name="titre" type="xs:string" />
+			<xs:element name="version" type="xs:string" />
+			<xs:element name="date" type="xs:string" />
+			<xs:element name="description" type="xs:string" />
+			<xs:element name="client" type="ClientType" minOccurs="1"
+				maxOccurs="1" />
+			<xs:element name="equipe" type="EquipeType" />
+			
+			<xs:element name="fonctionnalites" type="FonctionaliteTypes"
+				minOccurs="1" maxOccurs="1" />
+			<xs:element name="commentaire" type="xs:string"
+				minOccurs="0" maxOccurs="1" />
+		</xs:sequence>
+		<xs:attribute name="id" type="xs:int" />
+	</xs:complexType>
+	
+	<xs:complexType name="FonctionaliteTypes">
+		<xs:sequence>
+			<xs:element name="fonctionnalite" type="FonctionaliteType"
+				minOccurs="1" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="ClientType">
+		<xs:sequence>
+			<xs:element name="entite" type="xs:string" />
+			<xs:element name="contact" type="typeMembre" />
+			<xs:element name="codePostal" type="xs:string" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="nomType">
+		<xs:simpleContent>
+			<xs:extension base="xs:string">
+				<xs:attribute use="required" name="gender" type="xs:boolean" />
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+
+	<xs:complexType name="typeMembre">
+		<xs:sequence>
+			<xs:element name="nom" type="nomType"/>
+			<xs:element name="prenom" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="EquipeType">
+		<xs:sequence maxOccurs="7" minOccurs="1">
+			<xs:element name="membre" type="typeMembre"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:simpleType name="proprieteRestriction">
+		<xs:restriction base="xs:int">
+			<xs:minInclusive value="1" />
+			<xs:maxInclusive value="10" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:complexType name="ExigenceFonctionnelleType">
+		<xs:sequence>
+			<xs:element name="identifiant" type="xs:string" />
+			<xs:element name="priorite" type="proprieteRestriction" />
+			<xs:element name="description" type="xs:string" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="ExigenceFonctionnelleTypes">
+		<xs:sequence>
+			<xs:element name="exigenceFonctionnelle" type="ExigenceFonctionnelleType"
+				minOccurs="1" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="FonctionaliteType">
+		<xs:sequence>
+			<xs:element name="description" type="xs:string" />
+			<xs:element name="exigenceFonctionnelles" type="ExigenceFonctionnelleTypes"
+				minOccurs="1" maxOccurs="unbounded" />
+		</xs:sequence>
+		<xs:attribute use="required" name="priorite" type="proprieteRestriction" />
+	</xs:complexType>
+</xs:schema>
